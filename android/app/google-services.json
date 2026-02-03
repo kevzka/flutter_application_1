@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "732542294215",
+    "firebase_url": "https://proyekpickupsample-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "proyekpickupsample",
+    "storage_bucket": "proyekpickupsample.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732542294215:android:8037e498847a1abb7e86e2",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfbuOrzU6QUnSGEJOZtC2rd75ezc_1ZJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
