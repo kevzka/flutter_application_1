@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:free_map/free_map.dart';
-
-void main() => runApp(const MyApp());
+import 'package:flutter_application_1/providers/location_listener.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -19,15 +19,35 @@ class _MyAppState extends State<MyApp> {
   late final MapController _mapController;
   final _src = const LatLng(37.4165849896396, -122.08051867783071);
   final _dest = const LatLng(37.420921119071586, -122.08535335958004);
+  final _myHome = const LatLng(-3.4494044176942174, 114.8353060369455);
+  StreamSubscription? _locationSubscription;
 
   @override
   void initState() {
     super.initState();
     _mapController = MapController();
+    _initLocationStream();
+  }
+
+  void _initLocationStream() async {
+    try {
+      final locationStream = await getLocationStream();
+      _locationSubscription = locationStream.listen((locationData) {
+        if (mounted) {
+          setState(() {
+            _currentPos = LatLng(locationData.latitude!, locationData.longitude!);
+          });
+          print('Location: ${locationData.latitude}, ${locationData.longitude}');
+        }
+      });
+    } catch (e) {
+      print('Error getting location stream: $e');
+    }
   }
 
   @override
   void dispose() {
+    _locationSubscription?.cancel();
     _mapController.dispose();
     super.dispose();
   }
@@ -35,27 +55,50 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Builder(builder: (context) {
-        return GestureDetector(
-          onTap: FocusScope.of(context).unfocus,
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Free Map Demo')),
-            body: SafeArea(
-              bottom: false,
-              child: Stack(children: [
-                _map,
-                if (_loading)
-                  Container(
-                    alignment: Alignment.center,
-                    color: Colors.white.withAlpha(112),
-                    child: CircularProgressIndicator(),
-                  ),
-                _searchField
-              ]),
+      home: Builder(
+        builder: (context) {
+          return GestureDetector(
+            onTap: FocusScope.of(context).unfocus,
+            child: Scaffold(
+              appBar: AppBar(title: const Text('Free Map Demo')),
+              body: SafeArea(
+                bottom: false,
+                child: Stack(
+                  children: [
+                    _map,
+                    // Positioned(
+                    //   bottom: 0,
+                    //   child: Container(
+                    //     width: MediaQuery.of(context).size.width,
+                    //     height: MediaQuery.of(context).size.height * 0.5,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
+                    // ElevatedButton(
+                    //   onPressed: () async {
+                    //     try {
+                          
+                    //     } catch (e) {
+                    //       print('Error getting location: $e');
+                    //     }
+                    //   },
+                    //   child: Text('Get Location'),
+                    // ),
+
+                    if (_loading)
+                      Container(
+                        alignment: Alignment.center,
+                        color: Colors.white.withAlpha(112),
+                        child: CircularProgressIndicator(),
+                      ),
+                    _searchField,
+                  ],
+                ),
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 
@@ -72,7 +115,7 @@ class _MyAppState extends State<MyApp> {
             minZoom: 5,
             maxZoom: 18,
             initialZoom: 15,
-            initialCenter: _src,
+            initialCenter: _currentPos ?? _src,
             onTap: (pos, point) => _onMapTap(point),
           ),
           markers: [
@@ -84,20 +127,20 @@ class _MyAppState extends State<MyApp> {
                 Icons.location_on_rounded,
               ),
             ),
-            if (_currentPos == null)
-              Marker(
-                point: _dest,
-                child: const Icon(
-                  size: 40.0,
-                  color: Colors.blue,
-                  Icons.location_on_rounded,
-                ),
-              ),
+            // if (_currentPos == null)
+            //   Marker(
+            //     point: _dest,
+            //     child: const Icon(
+            //       size: 40.0,
+            //       color: Colors.blue,
+            //       Icons.location_on_rounded,
+            //     ),
+            //   ),
           ],
-          polylineOptions: const FmPolylineOptions(
-            strokeWidth: 3,
-            color: Colors.blue,
-          ),
+          // polylineOptions: const FmPolylineOptions(
+          //   strokeWidth: 3,
+          //   color: Color.fromARGB(255, 225, 3, 3),
+          // ),
         ),
       ),
     );

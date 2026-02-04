@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-final db = FirebaseFirestore.instance;
+final _db = FirebaseFirestore.instance;
 
 Future loginUser(email, password) async {
   String message = '';
@@ -10,7 +10,7 @@ Future loginUser(email, password) async {
       email: email,
       password: password,
     );
-    DocumentSnapshot data = await db
+    DocumentSnapshot data = await _db
         .collection("userData")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();

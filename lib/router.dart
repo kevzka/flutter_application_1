@@ -6,7 +6,9 @@ import 'package:flutter_application_1/screens/admin_screen.dart';
 import 'package:flutter_application_1/screens/driver_screen.dart';
 import 'package:flutter_application_1/screens/user_screen.dart';
 import 'package:flutter_application_1/screens/location_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_1/screens/google_map_screen.dart';
+import 'package:flutter_application_1/screens/real_time_db_screen.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 
 // GoRouter configuration
 final router = GoRouter(
@@ -16,7 +18,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => LoginPage(),
+      builder: (context, state) => const locationScreen(),
     ),
     GoRoute(
       path: '/admin',

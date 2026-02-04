@@ -41,6 +41,8 @@ dependencies:
   geolocator: ^14.0.2
   baseflow_plugin_template: ^2.2.1
   free_map: ^2.1.0
+  location: ^8.0.1
+  firebase_database: ^12.1.2
 
 dev_dependencies:
   flutter_test:
