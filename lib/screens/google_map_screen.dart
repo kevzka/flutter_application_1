@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:free_map/free_map.dart';
+import 'package:flutter_application_1/providers/write_location.dart';
 import 'package:flutter_application_1/providers/location_listener.dart';
 
 class MyApp extends StatefulWidget {
@@ -14,12 +15,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   FmData? _address;
   LatLng? _currentPos;
+  // LatLng _src;
+  LatLng? _dst;
   bool _loading = false;
   bool _isOverlayVisible = false;
   late final MapController _mapController;
   final _src = const LatLng(37.4165849896396, -122.08051867783071);
-  final _dest = const LatLng(37.420921119071586, -122.08535335958004);
-  final _myHome = const LatLng(-3.4494044176942174, 114.8353060369455);
+  // final _dest = const LatLng(37.420921119071586, -122.08535335958004);
+  // final _myHome = const LatLng(-3.4494044176942174, 114.8353060369455);
   StreamSubscription? _locationSubscription;
 
   @override
@@ -42,6 +45,27 @@ class _MyAppState extends State<MyApp> {
       });
     } catch (e) {
       print('Error getting location stream: $e');
+    }
+  }
+
+  void _readLocationFromDatabase() async {
+    try{
+      final locationRef = await readLocation("Dave");
+      locationRef.onValue.listen((event) {
+        final data = event.snapshot.value as Map?;
+        if (data != null) {
+          final lat = data['latitude'] as double?;
+          final lng = data['longitude'] as double?;
+          if (lat != null && lng != null) {
+            setState(() {
+              _dst = LatLng(lat, lng);
+            });
+            print('Read Location: $lat, $lng');
+          }
+        }
+      });
+    }catch(e){
+      print('Error reading location: $e');
     }
   }
 
@@ -127,15 +151,15 @@ class _MyAppState extends State<MyApp> {
                 Icons.location_on_rounded,
               ),
             ),
-            // if (_currentPos == null)
-            //   Marker(
-            //     point: _dest,
-            //     child: const Icon(
-            //       size: 40.0,
-            //       color: Colors.blue,
-            //       Icons.location_on_rounded,
-            //     ),
-            //   ),
+            if (_dst != null)
+              Marker(
+                point: _dst!,
+                child: const Icon(
+                  size: 40.0,
+                  color: Colors.blue,
+                  Icons.location_on_rounded,
+                ),
+              ),
           ],
           // polylineOptions: const FmPolylineOptions(
           //   strokeWidth: 3,

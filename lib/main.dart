@@ -6,8 +6,13 @@ import 'package:flutter_application_1/screens/admin_screen.dart';
 import 'package:flutter_application_1/screens/driver_screen.dart';
 import 'package:flutter_application_1/screens/user_screen.dart';
 import 'package:flutter_application_1/router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() async {
+Future<void> main() async {
+  await Supabase.initialize(
+    url: 'https://uuyuwqngeviyzgdrfjqc.supabase.co',
+    anonKey: 'sb_publishable_yYtSrHUr2-tfKYS4SpeGVQ_XMSwrhTQ',
+  );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
