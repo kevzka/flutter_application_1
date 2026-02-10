@@ -12,6 +12,8 @@ Future<void> main() async {
   await Supabase.initialize(
     url: 'https://uuyuwqngeviyzgdrfjqc.supabase.co',
     anonKey: 'sb_publishable_yYtSrHUr2-tfKYS4SpeGVQ_XMSwrhTQ',
+    // url: 'https://lcbvrokfqpaylclxhpqn.supabase.co',
+    // anonKey: 'sb_publishable_A3QTA86sUrkBFlrFC-LT5Q_iuKAUYqI',
   );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
