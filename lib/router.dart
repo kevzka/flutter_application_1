@@ -11,6 +11,7 @@ import 'package:flutter_application_1/screens/real_time_db_screen.dart';
 import 'package:flutter_application_1/screens/loginScreenSupa.dart';
 import 'package:flutter_application_1/screens/write_realtime_database_supa.dart';
 import 'package:flutter_application_1/screens/register_user_supabase.dart';
+import 'package:flutter_application_1/screens/oauth_supa_google.dart';  
 // import 'package:firebase_auth/firebase_auth.dart';
 
 // GoRouter configuration
@@ -21,7 +22,7 @@ final router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const SignInUserSupa(),
+      builder: (context, state) => const SignInTest(),
     ),
     GoRoute(
       path: '/admin',
